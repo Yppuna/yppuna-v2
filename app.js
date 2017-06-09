@@ -432,7 +432,7 @@ var job = new CronJob({
                 //console.log('Message sent: ' + info.response);
                   transporter.close();
                   slack.send({
-                    channel: '#new-order',
+                    channel: '#productexpirationdate',
                     icon_url: 'http://yppuna.vn/images/favicon/favicon-96x96.png',
                     text: 'Product '+ product.name + 'expiration date is in '+ time + '. <http://128.199.183.150:3000/products/details/'+product.id+'>',
                     unfurl_links: 1,
