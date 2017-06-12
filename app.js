@@ -424,7 +424,7 @@ var job = new CronJob({
             if (notif == true) {
               transporter.sendMail({
                 from: 'hello@yppuna.vn',
-                to: 'ngoc@yppuna.vn,hiep@yppuna.vn',
+                to: 'ngoc@yppuna.vn',
                 subject: 'Expiration date notification',
                 html: '<p>Product '+ product.name + 'expiration date is in '+ time + '.</p><a href="http://128.199.183.150:3000/products/details/'+product.id+'">Click here for product details</a>',
               }, function (err, info) {
@@ -432,7 +432,7 @@ var job = new CronJob({
                 //console.log('Message sent: ' + info.response);
                   transporter.close();
                   slack.send({
-                    channel: '#productexpirationdate',
+                    channel: '#exp-date-notification',
                     icon_url: 'http://yppuna.vn/images/favicon/favicon-96x96.png',
                     text: 'Product '+ product.name + 'expiration date is in '+ time + '. <http://128.199.183.150:3000/products/details/'+product.id+'>',
                     unfurl_links: 1,
