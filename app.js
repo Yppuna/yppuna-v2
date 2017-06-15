@@ -429,7 +429,7 @@ var job = new CronJob({
       });
       transporter.sendMail({
         from: 'hello@yppuna.vn',
-        to: 'trung@yppuna.vn',
+        to: 'ngoc@yppuna.vn',
         subject: 'Expiration date notification',
         // html: '<p>Product '+ product.name + 'expiration date is in '+ time + '.</p><a href="http://128.199.183.150:3000/products/details/'+product.id+'">Click here for product details</a>',
         html: html,
