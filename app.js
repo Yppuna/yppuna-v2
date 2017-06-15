@@ -400,48 +400,50 @@ app.use(function(err, req, res, next) {
 
 //Expiration Date Job
 var job = new CronJob({
-  cronTime: '00 00 03 * * *',
+  cronTime: '30 2 * * *',
   onTick: function() {
-    Product.find({ extend: 4 }, function(err, products) {
+    Product.find({ extend: 4, exp_date: { $exists: true } }, function(err, products) {
+      let html = `Expired products: </br>`;
+
       products.forEach(function(product) {
-        if (product.exp_date) {
-          product.exp_date.forEach(function(date) {
-            var notif = false;
-            var time;
-            var diff = moment(date).diff(moment().hours(0).minutes(0).seconds(0).milliseconds(0), 'months', true);
-            if (diff == 12) {
-              time = 'one year';
-              notif = true;
-            }
-            else if (diff == 8) {
-              time = '8 months';
-              notif = true;
-            }
-            else if (diff == 6) {
-              time = '6 months';
-              notif = true;
-            }
-            if (notif == true) {
-              transporter.sendMail({
-                from: 'hello@yppuna.vn',
-                to: 'ngoc@yppuna.vn',
-                subject: 'Expiration date notification',
-                html: '<p>Product '+ product.name + 'expiration date is in '+ time + '.</p><a href="http://128.199.183.150:3000/products/details/'+product.id+'">Click here for product details</a>',
-              }, function (err, info) {
-                  if (err) { console.log(err); }
-                //console.log('Message sent: ' + info.response);
-                  transporter.close();
-                  slack.send({
-                    channel: '#exp-date-notification',
-                    icon_url: 'http://yppuna.vn/images/favicon/favicon-96x96.png',
-                    text: 'Product '+ product.name + 'expiration date is in '+ time + '. <http://128.199.183.150:3000/products/details/'+product.id+'>',
-                    unfurl_links: 1,
-                    username: 'Yppuna-bot'
-                  });
-              });
-            }
+        product.exp_date.forEach(function(date) {
+          let notif = false;
+          let time;
+          const diff = moment(date).diff(moment().hours(0).minutes(0).seconds(0).milliseconds(0), 'months', true);
+          if (diff <= 6) {
+            time = '6 months';
+            notif = true;
+          }
+          else if (diff <= 8) {
+            time = '8 months';
+            notif = true;
+          }
+          else if (diff <= 12) {
+            time = '12 months';
+            notif = true;
+          }
+          if (notif == true) {
+            html = html.concat(`http://128.199.183.150:3000/shop/products/${product.url} - ${time} </br>`);
+          }
+        });
+      });
+      transporter.sendMail({
+        from: 'hello@yppuna.vn',
+        to: 'trung@yppuna.vn',
+        subject: 'Expiration date notification',
+        // html: '<p>Product '+ product.name + 'expiration date is in '+ time + '.</p><a href="http://128.199.183.150:3000/products/details/'+product.id+'">Click here for product details</a>',
+        html: html,
+      }, function (err, info) {
+          if (err) { console.log(err); }
+          transporter.close();
+          slack.send({
+            channel: '#exp-date-notification',
+            icon_url: 'http://yppuna.vn/images/favicon/favicon-96x96.png',
+            // text: 'Product '+ product.name + 'expiration date is in '+ time + '. <http://128.199.183.150:3000/products/details/'+product.id+'>',
+            text: 'Check email for expired products',
+            unfurl_links: 1,
+            username: 'Yppuna-bot'
           });
-        }
       });
     });
   },
