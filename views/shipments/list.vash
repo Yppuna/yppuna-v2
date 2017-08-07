@@ -230,7 +230,7 @@ $(document).ready(function() {
 				$('#line_input').addClass('hide');
 				$('.options').prop('disabled', false);
 				$('#line_input').prop('disabled', true);
-				$('select').material_select();                
+				$('select').material_select();
 			});
 		},
 		minLength: 4
@@ -248,9 +248,16 @@ $(document).ready(function() {
 		form.find('#e_name').val(ship.find('.name').html());
 		form.find('#e_line').val(ship.find('.line').html());
 		form.find('#e_quantity').val(ship.find('.quantity').html());
-		form.find('#e_price').val(parseInt(ship.find('.price').html()));
+    console.log("ship.find('.price').html() : ", ship.find('.price').html())
+    if (ship.find('.price').html()) {
+      form.find('#e_price').val(parseInt(ship.find('.price').html()));
+      form.find('#e_price').val(parseInt(ship.find('.price').html()));
+    }
 		form.find('#e_from').val(ship.find('.from').html());
-		form.find('#e_est_date').val(ship.find('.est_date').html());
+    console.log("ship.find('.est_date').html() : ", ship.find('.est_date').html());
+    if (ship.find('.est_date').html()) {
+      form.find('#e_est_date').val(ship.find('.est_date').html());
+    }
 		form.find('#rec_quantity').val(ship.find('.rec_quantity').val());
 		form.find('#brk_quantity').val(ship.find('.brk_quantity').val());
 		form.find('#to').val(ship.find('.to').val());
@@ -259,7 +266,7 @@ $(document).ready(function() {
 		console.log(form.find('#e_status option:selected'));
 		form.find('#e_status').val([]);
 		form.find('#e_status option[value='+ship.find('.status').html()+']').attr('selected','selected');
-		$('select').material_select();		
+		$('select').material_select();
 		$('#edit_modal').openModal();
 	});
 });
