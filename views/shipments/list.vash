@@ -157,10 +157,10 @@
 				<td class="id">@shipment.id</td>
 				<td class="truncate name">@shipment.name</td>
 				<td class="line">@shipment.line</td>
-				<td><span class="price">@shipment.price</span></td>
+				<td><span class="price">@if(shipment.price){ @shipment.price }</span></td>
 				<td class="quantity">@shipment.quantity</td>
 				<td class="from">@shipment.from</td>
-				<td class="est_date">@model.moment(shipment.est_date).format("YYYY/MM/DD")</td>
+				<td class="est_date">@if(shipment.est_date){ @model.moment(shipment.est_date).format("YYYY/MM/DD") }</td>
 				<td class="status">@shipment.status</td>
 				<td>
 					<a class="users-link blue-grey-text text-darken-2" href="/shipments/view/@shipment.id"><i class="fa fa-eye fa-fw fa-1-5x"></i></a>
